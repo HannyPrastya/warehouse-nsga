@@ -1,0 +1,26 @@
+{
+  "numberOfOrders" : 0,
+  "numberOfparts" : 0,
+  "totalOfWeight" : 0,
+  "orders" : [
+    {
+      "itemIDs" : [1,2,0]
+    }
+  ],
+  "items": [
+    {
+      "weight" : 1,
+      "location" : 1
+    }
+  ],
+  "location":[
+    {
+      "row" : 0,
+      "column": 0
+    },
+    {
+      "row" : 1,
+      "column": 0
+    }
+  ]
+}
