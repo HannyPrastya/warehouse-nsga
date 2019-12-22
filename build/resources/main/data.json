@@ -13,13 +13,9 @@
       "location" : 1
     }
   ],
-  "warehouse":[
+  "location":[
     {
       "row" : 0,
-      "column": 0
-    },
-    {
-      "row" : 1,
       "column": 0
     }
   ]

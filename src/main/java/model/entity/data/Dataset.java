@@ -1,5 +1,5 @@
 
-package model.entity;
+package model.entity.data;
 
 import java.util.HashMap;
 import java.util.List;
@@ -16,7 +16,9 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "numberOfOrders",
     "numberOfparts",
     "totalOfWeight",
-    "orders"
+    "orders",
+    "items",
+    "location"
 })
 public class Dataset {
 
@@ -28,6 +30,10 @@ public class Dataset {
     private Integer totalOfWeight;
     @JsonProperty("orders")
     private List<Order> orders = null;
+    @JsonProperty("items")
+    private List<Item> items = null;
+    @JsonProperty("location")
+    private List<Location> location = null;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -69,6 +75,26 @@ public class Dataset {
     @JsonProperty("orders")
     public void setOrders(List<Order> orders) {
         this.orders = orders;
+    }
+
+    @JsonProperty("items")
+    public List<Item> getItems() {
+        return items;
+    }
+
+    @JsonProperty("items")
+    public void setItems(List<Item> items) {
+        this.items = items;
+    }
+
+    @JsonProperty("location")
+    public List<Location> getLocation() {
+        return location;
+    }
+
+    @JsonProperty("location")
+    public void setLocation(List<Location> location) {
+        this.location = location;
     }
 
     @JsonAnyGetter

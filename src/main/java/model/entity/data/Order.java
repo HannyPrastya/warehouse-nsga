@@ -1,4 +1,5 @@
-package model.entity;
+
+package model.entity.data;
 
 import java.util.HashMap;
 import java.util.List;
@@ -12,27 +13,14 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "orderID",
     "itemIDs"
 })
 public class Order {
 
-    @JsonProperty("orderID")
-    private Integer orderID;
     @JsonProperty("itemIDs")
     private List<Integer> itemIDs = null;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
-
-    @JsonProperty("orderID")
-    public Integer getOrderID() {
-        return orderID;
-    }
-
-    @JsonProperty("orderID")
-    public void setOrderID(Integer orderID) {
-        this.orderID = orderID;
-    }
 
     @JsonProperty("itemIDs")
     public List<Integer> getItemIDs() {
