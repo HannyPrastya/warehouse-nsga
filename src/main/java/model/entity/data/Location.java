@@ -20,6 +20,12 @@ public class Location {
     private Integer x;
     @JsonProperty("y")
     private Integer y;
+    @JsonProperty("index")
+    private Integer index;
+    @JsonProperty("direction")
+    private Integer direction;
+    @JsonProperty("rowIndex")
+    private Integer rowIndex;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -52,6 +58,36 @@ public class Location {
     @JsonProperty("y")
     public void setY(Integer y) {
         this.y = y;
+    }
+
+    @JsonProperty("direction")
+    public Integer getDirection() {
+        return direction;
+    }
+
+    @JsonProperty("direction")
+    public void setDirection(Integer direction) {
+        this.direction = direction;
+    }
+
+    @JsonProperty("index")
+    public Integer getIndex() {
+        return index;
+    }
+
+    @JsonProperty("index")
+    public void setIndex(Integer index) {
+        this.index = index;
+    }
+
+    @JsonProperty("rowIndex")
+    public Integer getRowIndex() {
+        return rowIndex;
+    }
+
+    @JsonProperty("rowIndex")
+    public void setRowIndex(Integer rowIndex) {
+        this.rowIndex = rowIndex;
     }
 
     @JsonAnyGetter

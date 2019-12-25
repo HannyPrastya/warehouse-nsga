@@ -1,8 +1,8 @@
 package controller;
 
 import model.entity.data.Location;
-import model.entity.data.Node;
-import usecase.Astar;
+import model.entity.data.Warehouse;
+import usecase.GetShortestDistance;
 import usecase.GetWarehouseMap;
 
 import java.util.ArrayList;
@@ -12,11 +12,24 @@ public class WarehouseRepository {
     ArrayList<Location> locations;
 
     public WarehouseRepository(int items){
-        int rows = 5;
+
+//        set warehouse
+        Warehouse warehouse = new Warehouse();
+        warehouse.setNumberOfHorizontalAisle(3);
+        warehouse.setNumberOfRows(4);
+        warehouse.setNumberOfVerticalAisle(5);
 
 //        get locations
         GetWarehouseMap map = new GetWarehouseMap();
-        locations = map.getLocationNodes(1,5,rows);
+        locations = map.getLocationNodes(warehouse);
+
+//        print locations
+        for (Location loc: locations) {
+            System.out.println(loc.getX()+"-"+loc.getY());
+        }
+
+//        get shortest distances
+        new GetShortestDistance(locations, warehouse);
 
 //        set search area
 //        Astar astar = new Astar(map.getMaxY(),map.getMaxX());
@@ -73,38 +86,38 @@ public class WarehouseRepository {
 //        System.out.println(astar.findPath().size());
 
 
-        for (int i = 0; i < locations.size(); i++) {
-            Location start = locations.get(i);
-            ArrayList<Integer> distances = new ArrayList<Integer>();
-            for (int j = 0; j < locations.size(); j++){
-                Location destination = locations.get(j);
-
-                Astar astar = new Astar(map.getMaxY(),map.getMaxX());
-                for (int k = 0; k < locations.size(); k++ ) {
-                    Location loc = locations.get(k);
-                    astar.setBlock(loc.getY(), loc.getX());
-//                    System.out.println(i+". "+loc.getY()+"-"+loc.getX());
-                }
-
-                int startX = i == 0 ? 0 : (i & 1) == 0 ?  1 : -1;
-                int destinationX = j == 0 ? 0 : (j & 1) == 0 ?  1 : -1;
-
-                astar.setInitialNode(new Node(start.getY(), start.getX()+startX));
-                astar.setFinalNode(new Node(destination.getY(), destination.getX()+destinationX));
-//                System.out.println(start.getY()+"-"+(start.getX()+startX));
-//                System.out.println(destination.getY()+"-"+(destination.getX()+destinationX));
-                int dist = astar.findPath().size();
-//                System.out.println(dist);
-
-                distances.add(dist);
-//                try {
-//                    TimeUnit.SECONDS.sleep(1);
-//                } catch (IntuptedException e) {
-//                    e.printStackTerrrace();
+//        for (int i = 0; i < locations.size(); i++) {
+//            Location start = locations.get(i);
+//            ArrayList<Integer> distances = new ArrayList<Integer>();
+//            for (int j = 0; j < locations.size(); j++){
+//                Location destination = locations.get(j);
+//
+//                Astar astar = new Astar(map.getMaxY(),map.getMaxX());
+//                for (int k = 0; k < locations.size(); k++ ) {
+//                    Location loc = locations.get(k);
+//                    astar.setBlock(loc.getY(), loc.getX());
+////                    System.out.println(i+". "+loc.getY()+"-"+loc.getX());
 //                }
-            }
-            locations.get(i).setDistances(distances);
-        }
+//
+//                int startX = i == 0 ? 0 : (i & 1) == 0 ?  1 : -1;
+//                int destinationX = j == 0 ? 0 : (j & 1) == 0 ?  1 : -1;
+//
+//                astar.setInitialNode(new Node(start.getY(), start.getX()+startX));
+//                astar.setFinalNode(new Node(destination.getY(), destination.getX()+destinationX));
+////                System.out.println(start.getY()+"-"+(start.getX()+startX));
+////                System.out.println(destination.getY()+"-"+(destination.getX()+destinationX));
+//                int dist = astar.findPath().size();
+////                System.out.println(dist);
+//
+//                distances.add(dist);
+////                try {
+////                    TimeUnit.SECONDS.sleep(1);
+////                } catch (IntuptedException e) {
+////                    e.printStackTerrrace();
+////                }
+//            }
+//            locations.get(i).setDistances(distances);
+//        }
     }
 
     public ArrayList<Location> getLocations() {

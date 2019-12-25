@@ -1,6 +1,7 @@
 package usecase;
 
 import model.entity.data.Location;
+import model.entity.data.Warehouse;
 
 import java.util.ArrayList;
 
@@ -11,7 +12,7 @@ public class GetWarehouseMap {
     private int maxY;
     private int maxX;
 
-    public ArrayList<Location> getLocationNodes(int horizontalAisle, int verticalAsile, int row){
+    public ArrayList<Location> getLocationNodes(Warehouse warehouse){
         int column = 2;
         int x = 1;
         int y = 1;
@@ -21,12 +22,12 @@ public class GetWarehouseMap {
         depot.setX(x);
         depot.setY(y);
         locations.add(depot);
-        for(int i = 0; i <= verticalAsile; i++){
-            x = (1*i)+(2*(i+1));
+        for(int i = 0; i <= warehouse.getNumberOfVerticalAisle(); i++){
+            x = 1+(2*i)+(2*(i+1));
 //            x = 1+((column+1)*i)+(2*(i+1));
-            for(int j = 0; j <= horizontalAisle; j++){
+            for(int j = 0; j <= warehouse.getNumberOfHorizontalAisle(); j++){
 //                y = 2+((column+3+1)*j)+(2*(j+1));
-                y = ((column+2)*j)+(2*(j+1));
+                y = 1+((column+2)*j)+(2*(j+1));
 
 //                for(int b = 0; b < numberOfBlocks; b++){
 //                    Location block = new Location();
@@ -35,10 +36,14 @@ public class GetWarehouseMap {
 //                    blocks.add(block);
 //                }
 
-                for(int k = 0; k < row; k++) {
+                for(int k = 0; k < warehouse.getNumberOfRows(); k++) {
+                    int dir = k+1 > warehouse.getNumberOfRows()/2 ? 1 : 0;
                     Location locLeft = new Location();
                     locLeft.setX(x);
                     locLeft.setY(y+k);
+                    locLeft.setIndex(k+1);
+                    locLeft.setDirection(dir);
+                    locLeft.setRowIndex(j);
                     locations.add(locLeft);
 
 //                    Location block = new Location();
@@ -50,6 +55,9 @@ public class GetWarehouseMap {
                     locRight.setX(x+1);
 //                    locRight.setX(x+2);
                     locRight.setY(y+k);
+                    locRight.setIndex(k+1);
+                    locRight.setDirection(dir);
+                    locRight.setRowIndex(j);
                     locations.add(locRight);
                 }
 
@@ -61,7 +69,7 @@ public class GetWarehouseMap {
 //                }
             }
             maxX = x+3;
-            maxY = y+row+3;
+            maxY = y+warehouse.getNumberOfRows()+3;
         }
 
         return locations;
@@ -78,4 +86,5 @@ public class GetWarehouseMap {
     public ArrayList<Location> getBlocks() {
         return blocks;
     }
+
 }

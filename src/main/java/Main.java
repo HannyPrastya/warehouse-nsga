@@ -1,3 +1,4 @@
+import controller.DatasetRespository;
 import controller.WarehouseRepository;
 import model.entity.data.Location;
 
@@ -13,26 +14,31 @@ public class Main {
         int order = 100;
         int items = 5;
 
-        WarehouseRepository warehouse = new WarehouseRepository(items);
+//        warehouse
+        WarehouseRepository warehouseRepository = new WarehouseRepository(items);
+
+//        dataset
+        DatasetRespository datasetRespository = new DatasetRespository();
 
 
-        try (PrintWriter writer = new PrintWriter(new File("D:/test.csv"))) {
 
-            StringBuilder sb = new StringBuilder();
-
-            for (Location loc: warehouse.getLocations()) {
-                for (int i = 0; i < loc.getDistances().size(); i++) {
-                    Integer distance = loc.getDistances().get(i);
-                    sb.append(loc.getX()+", "+loc.getY()+";");
-                    sb.append(warehouse.getLocations().get(i).getX()+", "+warehouse.getLocations().get(i).getY()+";");
-                    sb.append(distance+";");
-                    sb.append('\n');
-                }
-            }
-            writer.write(sb.toString());
-
-        } catch (FileNotFoundException e) {
-            System.out.println(e.getMessage());
-        }
+//        try (PrintWriter writer = new PrintWriter(new File("/Users/hirito48/Desktop/test.csv"))) {
+//
+//            StringBuilder sb = new StringBuilder();
+//
+//            for (Location loc: warehouse.getLocations()) {
+//                for (int i = 0; i < loc.getDistances().size(); i++) {
+//                    Integer distance = loc.getDistances().get(i);
+//                    sb.append(loc.getX()+", "+loc.getY()+";");
+//                    sb.append(warehouse.getLocations().get(i).getX()+", "+warehouse.getLocations().get(i).getY()+";");
+//                    sb.append(distance+";");
+//                    sb.append('\n');
+//                }
+//            }
+//            writer.write(sb.toString());
+//
+//        } catch (FileNotFoundException e) {
+//            System.out.println(e.getMessage());
+//        }
     }
 }
