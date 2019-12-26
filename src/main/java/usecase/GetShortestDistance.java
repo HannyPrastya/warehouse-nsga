@@ -1,12 +1,9 @@
 package usecase;
 
-import model.entity.data.Location;
-import model.entity.data.Warehouse;
+import model.entity.Location;
+import model.entity.Warehouse;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-
-import static java.lang.Math.*;
 
 public class GetShortestDistance {
 

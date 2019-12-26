@@ -1,5 +1,5 @@
 
-package model.entity.data;
+package model.entity;
 
 import com.fasterxml.jackson.annotation.*;
 
@@ -10,7 +10,9 @@ import java.util.Map;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "y",
-    "x"
+    "x",
+    "distances",
+    "index"
 })
 public class Location {
 
@@ -26,6 +28,8 @@ public class Location {
     private Integer direction;
     @JsonProperty("rowIndex")
     private Integer rowIndex;
+    @JsonProperty("weight")
+    private Integer weight;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -88,6 +92,16 @@ public class Location {
     @JsonProperty("rowIndex")
     public void setRowIndex(Integer rowIndex) {
         this.rowIndex = rowIndex;
+    }
+
+    @JsonProperty("weight")
+    public Integer getWeight() {
+        return weight;
+    }
+
+    @JsonProperty("weight")
+    public void setWeight(Integer weight) {
+        this.weight = weight;
     }
 
     @JsonAnyGetter

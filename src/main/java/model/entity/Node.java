@@ -1,4 +1,4 @@
-package model.entity.data;
+package model.entity;
 
 public class Node {
 

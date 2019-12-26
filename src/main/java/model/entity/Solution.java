@@ -1,27 +1,30 @@
-package model.entity.ga;
+package model.entity;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import java.util.ArrayList;
+
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
         "chromosome",
         "distance",
-        "space"
+        "space",
+        "batches"
 })
 
 public class Solution {
     @JsonProperty("chromosome")
-    private Integer[] chromosome;
+    private ArrayList<Integer> chromosome;
 
     @JsonProperty("chromosome")
-    public Integer[] getChromosome() {
+    public ArrayList<Integer> getChromosome() {
         return chromosome;
     }
 
     @JsonProperty("chromosome")
-    public void setChromosome(Integer[] chromosome) {
+    public void setChromosome(ArrayList<Integer> chromosome) {
         this.chromosome = chromosome;
     }
 
@@ -50,5 +53,19 @@ public class Solution {
     public void setSpace(float space) {
         this.space = space;
     }
+
+    @JsonProperty("batches")
+    private ArrayList<Batch> batches;
+
+    @JsonProperty("batches")
+    public ArrayList<Batch> getBatches() {
+        return batches;
+    }
+
+    @JsonProperty("space")
+    public void setBatches(ArrayList<Batch> batches) {
+        this.batches = batches;
+    }
+
 
 }

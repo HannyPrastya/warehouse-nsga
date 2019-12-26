@@ -1,7 +1,7 @@
 package controller;
 
-import model.entity.data.Location;
-import model.entity.data.Warehouse;
+import model.entity.Location;
+import model.entity.Warehouse;
 import usecase.GetShortestDistance;
 import usecase.GetWarehouseMap;
 
@@ -11,7 +11,7 @@ public class WarehouseRepository {
 
     ArrayList<Location> locations;
 
-    public WarehouseRepository(int items){
+    public WarehouseRepository(){
 
 //        set warehouse
         Warehouse warehouse = new Warehouse();
@@ -24,9 +24,9 @@ public class WarehouseRepository {
         locations = map.getLocationNodes(warehouse);
 
 //        print locations
-        for (Location loc: locations) {
-            System.out.println(loc.getX()+"-"+loc.getY());
-        }
+//        for (Location loc: locations) {
+//            System.out.println(loc.getX()+"-"+loc.getY());
+//        }
 
 //        get shortest distances
         new GetShortestDistance(locations, warehouse);

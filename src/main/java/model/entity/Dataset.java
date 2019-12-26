@@ -1,5 +1,5 @@
 
-package model.entity.data;
+package model.entity;
 
 import java.util.HashMap;
 import java.util.List;
@@ -14,26 +14,26 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "numberOfOrders",
-    "numberOfparts",
+    "numberOfItems",
     "totalOfWeight",
     "orders",
     "items",
-    "location"
+    "capacity"
 })
 public class Dataset {
 
     @JsonProperty("numberOfOrders")
     private Integer numberOfOrders;
-    @JsonProperty("numberOfparts")
-    private Integer numberOfparts;
+    @JsonProperty("numberOfItemPerOrder")
+    private Integer numberOfItemPerOrder;
     @JsonProperty("totalOfWeight")
     private Integer totalOfWeight;
     @JsonProperty("orders")
     private List<Order> orders = null;
     @JsonProperty("items")
     private List<Item> items = null;
-    @JsonProperty("location")
-    private List<Location> location = null;
+    @JsonProperty("capacity")
+    private Integer capacity = null;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -47,14 +47,14 @@ public class Dataset {
         this.numberOfOrders = numberOfOrders;
     }
 
-    @JsonProperty("numberOfparts")
-    public Integer getNumberOfparts() {
-        return numberOfparts;
+    @JsonProperty("numberOfItemPerOrder")
+    public Integer getNumberOfItemPerOrder() {
+        return numberOfItemPerOrder;
     }
 
-    @JsonProperty("numberOfparts")
-    public void setNumberOfparts(Integer numberOfparts) {
-        this.numberOfparts = numberOfparts;
+    @JsonProperty("numberOfItemPerOrder")
+    public void setNumberOfItemPerOrder(Integer numberOfItemPerOrder) {
+        this.numberOfItemPerOrder = numberOfItemPerOrder;
     }
 
     @JsonProperty("totalOfWeight")
@@ -87,14 +87,14 @@ public class Dataset {
         this.items = items;
     }
 
-    @JsonProperty("location")
-    public List<Location> getLocation() {
-        return location;
+    @JsonProperty("capacity")
+    public Integer getCapacity() {
+        return capacity;
     }
 
-    @JsonProperty("location")
-    public void setLocation(List<Location> location) {
-        this.location = location;
+    @JsonProperty("capacity")
+    public void setCapacity(Integer capacity) {
+        this.capacity = capacity;
     }
 
     @JsonAnyGetter

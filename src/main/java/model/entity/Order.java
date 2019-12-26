@@ -1,7 +1,8 @@
 
-package model.entity.data;
+package model.entity;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -12,36 +13,23 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "weight",
-    "location"
+    "itemIDs"
 })
-public class Item {
+public class Order {
 
-    @JsonProperty("weight")
-    private Integer weight;
-    @JsonProperty("location")
-    private Integer location;
+    @JsonProperty("itemIDs")
+    private List<Integer> itemIDs = null;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
-    @JsonProperty("weight")
-    public Integer getWeight() {
-        return weight;
+    @JsonProperty("itemIDs")
+    public List<Integer> getItemIDs() {
+        return itemIDs;
     }
 
-    @JsonProperty("weight")
-    public void setWeight(Integer weight) {
-        this.weight = weight;
-    }
-
-    @JsonProperty("location")
-    public Integer getLocation() {
-        return location;
-    }
-
-    @JsonProperty("location")
-    public void setLocation(Integer location) {
-        this.location = location;
+    @JsonProperty("itemIDs")
+    public void setItemIDs(List<Integer> itemIDs) {
+        this.itemIDs = itemIDs;
     }
 
     @JsonAnyGetter

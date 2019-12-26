@@ -1,25 +1,24 @@
-import controller.DatasetRespository;
+import controller.DatasetRepository;
+import controller.NSGAModule;
 import controller.WarehouseRepository;
-import model.entity.data.Location;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
+import model.entity.Dataset;
 
 public class Main {
 
     public static void main(String[] args) {
-        int population = 100;
-        int capacity = 20;
-        int order = 100;
-        int items = 5;
+        int capacity = 5;
+        int numberOfOrder = 100;
+        int numberOfItemPerOrder = 5;
 
 //        warehouse
-        WarehouseRepository warehouseRepository = new WarehouseRepository(items);
+        WarehouseRepository warehouseRepository = new WarehouseRepository();
 
 //        dataset
-        DatasetRespository datasetRespository = new DatasetRespository();
+        DatasetRepository datasetRepository = new DatasetRepository(warehouseRepository.getLocations().size()-1, numberOfOrder, capacity, numberOfItemPerOrder);
 
+        Dataset dataset = datasetRepository.getDataset();
+//       chromsome
+        NSGAModule nsga = new NSGAModule(dataset, warehouseRepository.getLocations());
 
 
 //        try (PrintWriter writer = new PrintWriter(new File("/Users/hirito48/Desktop/test.csv"))) {

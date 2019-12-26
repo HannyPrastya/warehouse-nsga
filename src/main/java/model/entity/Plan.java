@@ -1,4 +1,4 @@
-package model.entity.data;
+package model.entity;
 
 import java.util.HashMap;
 import java.util.Map;

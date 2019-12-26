@@ -1,7 +1,7 @@
 package usecase;
 
-import model.entity.data.Location;
-import model.entity.data.Warehouse;
+import model.entity.Location;
+import model.entity.Warehouse;
 
 import java.util.ArrayList;
 
@@ -44,6 +44,7 @@ public class GetWarehouseMap {
                     locLeft.setIndex(k+1);
                     locLeft.setDirection(dir);
                     locLeft.setRowIndex(j);
+                    locLeft.setWeight((int )(Math.random() * 3 + 1));
                     locations.add(locLeft);
 
 //                    Location block = new Location();
@@ -58,6 +59,7 @@ public class GetWarehouseMap {
                     locRight.setIndex(k+1);
                     locRight.setDirection(dir);
                     locRight.setRowIndex(j);
+                    locRight.setWeight((int )(Math.random() * 3 + 1));
                     locations.add(locRight);
                 }
 
