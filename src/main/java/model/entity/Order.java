@@ -13,14 +13,26 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "itemIDs"
+    "itemIDs",
+    "totalWeight"
 })
 public class Order {
+
+    private float totalWeight;
 
     @JsonProperty("itemIDs")
     private List<Integer> itemIDs = null;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+
+
+    public float getTotalWeight() {
+        return totalWeight;
+    }
+
+    public void setTotalWeight(float totalWeight) {
+        this.totalWeight = totalWeight;
+    }
 
     @JsonProperty("itemIDs")
     public List<Integer> getItemIDs() {

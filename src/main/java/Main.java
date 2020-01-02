@@ -17,8 +17,11 @@ public class Main {
         DatasetRepository datasetRepository = new DatasetRepository(warehouseRepository.getLocations().size()-1, numberOfOrder, capacity, numberOfItemPerOrder);
 
         Dataset dataset = datasetRepository.getDataset();
+
 //       chromsome
         NSGAModule nsga = new NSGAModule(dataset, warehouseRepository.getLocations());
+
+        
 
 
 //        try (PrintWriter writer = new PrintWriter(new File("/Users/hirito48/Desktop/test.csv"))) {

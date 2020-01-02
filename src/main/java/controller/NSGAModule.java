@@ -1,9 +1,6 @@
 package controller;
 
-import model.entity.Batch;
-import model.entity.Dataset;
-import model.entity.Location;
-import model.entity.Solution;
+import model.entity.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -48,13 +45,18 @@ public class NSGAModule {
         for (Solution solution: population) {
 //            arrange chromsome to schedule
             for (int orderID : solution.getChromosome()) {
+                Order order = dataset.getOrders().get(orderID);
                 if(notFullBatches.size() == 0){
-                    for (Batch batch: notFullBatches) {
+                    Batch batch = new Batch();
+
+                    if(dataset.getCapacity() <= dataset.getCapacity()){
+                        batch.addOrder(dataset.getOrders().get(orderID));
+                    }else{
 
                     }
                 }else{
-                    Batch batch = new Batch();
-                    batch.addOrder(dataset.getOrders().get(orderID));
+                    for (Batch batch: notFullBatches) {
+                    }
                 }
             }
 
