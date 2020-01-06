@@ -6,16 +6,17 @@ import model.entity.Dataset;
 public class Main {
 
     public static void main(String[] args) {
-        int capacity = 5;
+        int capacity = 100;
         int numberOfOrder = 100;
         int numberOfItemPerOrder = 5;
 
 //        warehouse
         WarehouseRepository warehouseRepository = new WarehouseRepository();
 
-//        dataset
+//        get dataset
         DatasetRepository datasetRepository = new DatasetRepository(warehouseRepository.getLocations().size()-1, numberOfOrder, capacity, numberOfItemPerOrder);
 
+//        set dataset
         Dataset dataset = datasetRepository.getDataset();
 
 //       chromsome

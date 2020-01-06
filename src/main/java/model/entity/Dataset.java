@@ -33,7 +33,7 @@ public class Dataset {
     @JsonProperty("items")
     private List<Item> items = null;
     @JsonProperty("capacity")
-    private Integer capacity = null;
+    private int capacity = 0;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -88,12 +88,12 @@ public class Dataset {
     }
 
     @JsonProperty("capacity")
-    public Integer getCapacity() {
+    public int getCapacity() {
         return capacity;
     }
 
     @JsonProperty("capacity")
-    public void setCapacity(Integer capacity) {
+    public void setCapacity(int capacity) {
         this.capacity = capacity;
     }
 

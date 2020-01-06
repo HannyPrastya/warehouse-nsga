@@ -18,19 +18,19 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 public class Item {
 
     @JsonProperty("weight")
-    private Integer weight;
+    private int weight;
     @JsonProperty("location")
     private Integer location;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     @JsonProperty("weight")
-    public Integer getWeight() {
+    public int getWeight() {
         return weight;
     }
 
     @JsonProperty("weight")
-    public void setWeight(Integer weight) {
+    public void setWeight(int weight) {
         this.weight = weight;
     }
 

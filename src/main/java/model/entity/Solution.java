@@ -29,28 +29,28 @@ public class Solution {
     }
 
     @JsonProperty("distance")
-    private float distance;
+    private int distance = 0;
 
     @JsonProperty("distance")
-    public float getDistance() {
+    public int getDistance() {
         return distance;
     }
 
     @JsonProperty("distance")
-    public void setDistance(float distance) {
+    public void setDistance(int distance) {
         this.distance = distance;
     }
 
     @JsonProperty("space")
-    private float space;
+    private int space = 0;
 
     @JsonProperty("space")
-    public float getSpace() {
+    public int getSpace() {
         return space;
     }
 
     @JsonProperty("space")
-    public void setSpace(float space) {
+    public void setSpace(int space) {
         this.space = space;
     }
 

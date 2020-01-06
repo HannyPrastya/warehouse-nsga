@@ -10,10 +10,24 @@ import java.util.ArrayList;
 @JsonPropertyOrder({
         "orders",
         "locations",
-        "totalWeight"
+        "totalWeight",
+        "IDs"
 })
 
 public class Batch {
+    @JsonProperty("IDs")
+    private ArrayList<Integer> IDs = new ArrayList<>();
+
+    @JsonProperty("IDs")
+    public ArrayList<Integer> getIDs() {
+        return IDs;
+    }
+
+    @JsonProperty("IDs")
+    public void setIDs(ArrayList<Integer> IDs) {
+        this.IDs = IDs;
+    }
+
     @JsonProperty("orders")
     private ArrayList<Order> orders = new ArrayList<>();
 
@@ -41,19 +55,26 @@ public class Batch {
     }
 
     @JsonProperty("totalWeight")
-    private Integer totalWeight;
+    private int totalWeight = 0;
 
-    @JsonProperty("orders")
-    public Integer getTotalWeight() {
+    @JsonProperty("totalWeight")
+    public int getTotalWeight() {
         return totalWeight;
     }
 
     @JsonProperty("orders")
-    public void setTotalWeight(Integer totalWeight) {
+    public void setTotalWeight(int totalWeight) {
         this.totalWeight = totalWeight;
     }
 
     public void addOrder(Order order){
+//        System.out.println(order.getTotalWeight());
+        for (int id : order.getItemIDs()) {
+            if(!getIDs().contains(id)){
+                getIDs().add(id);
+            }
+        }
+        totalWeight += order.getTotalWeight();
         orders.add(order);
     }
 }
