@@ -14,7 +14,7 @@ import java.util.ArrayList;
         "batches"
 })
 
-public class Solution {
+public class Solution implements Cloneable{
     @JsonProperty("chromosome")
     private ArrayList<Integer> chromosome;
 
@@ -68,4 +68,19 @@ public class Solution {
     }
 
 
+    public void printGens(){
+        String del = "";
+        for (Integer i : getChromosome()) {
+            System.out.print(del+i);
+            del = ", ";
+        }
+        System.out.println("");
+    }
+
+    public Solution clone() throws CloneNotSupportedException {
+        Solution cloned = (Solution) super.clone();
+        cloned.setChromosome((ArrayList<Integer>) chromosome.clone());
+
+        return cloned;
+    }
 }
