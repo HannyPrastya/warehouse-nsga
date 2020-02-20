@@ -1,4 +1,4 @@
-package controller;
+package helper;
 
 import model.entity.Location;
 import model.entity.Warehouse;
@@ -9,27 +9,10 @@ import java.util.ArrayList;
 
 public class WarehouseRepository {
 
-    ArrayList<Location> locations;
+    private static ArrayList<Location> locations;
 
     public WarehouseRepository(){
-
 //        set warehouse
-        Warehouse warehouse = new Warehouse();
-        warehouse.setNumberOfHorizontalAisle(3);
-        warehouse.setNumberOfRows(4);
-        warehouse.setNumberOfVerticalAisle(5);
-
-//        get locations
-        GetWarehouseMap map = new GetWarehouseMap();
-        locations = map.getLocationNodes(warehouse);
-
-//        print locations
-//        for (Location loc: locations) {
-//            System.out.println(loc.getX()+"-"+loc.getY());
-//        }
-
-//        get shortest distances
-        new GetShortestDistance(locations, warehouse);
 
 //        set search area
 //        Astar astar = new Astar(map.getMaxY(),map.getMaxX());
@@ -120,7 +103,19 @@ public class WarehouseRepository {
 //        }
     }
 
-    public ArrayList<Location> getLocations() {
+    public static ArrayList<Location> getLocations() {
+        Warehouse warehouse = new Warehouse();
+        warehouse.setNumberOfHorizontalAisle(3);
+        warehouse.setNumberOfRows(4);
+        warehouse.setNumberOfVerticalAisle(5);
+
+//        get locations
+        GetWarehouseMap map = new GetWarehouseMap();
+        locations = map.getLocationNodes(warehouse);
+
+//        get shortest distances
+        new GetShortestDistance(locations, warehouse);
+
         return locations;
     }
 }

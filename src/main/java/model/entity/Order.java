@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "itemIDs",
     "totalWeight"
 })
-public class Order {
+public class Order implements  Cloneable{
 
     private int totalWeight;
 
@@ -54,4 +54,9 @@ public class Order {
         this.additionalProperties.put(name, value);
     }
 
+    public Order clone() throws CloneNotSupportedException {
+        Order cloned = (Order) super.clone();
+
+        return cloned;
+    }
 }

@@ -107,4 +107,7 @@ public class Dataset {
         this.additionalProperties.put(name, value);
     }
 
+    public int getMaxNumberofBatches(){
+        return (int) Math.ceil(getTotalOfWeight()/getCapacity());
+    }
 }

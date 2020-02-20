@@ -18,6 +18,8 @@ public class Location {
 
     @JsonProperty("distances")
     private ArrayList<Integer> distances;
+    @JsonProperty("global_pheromone")
+    private ArrayList<Integer> globalPheromones;
     @JsonProperty("x")
     private Integer x;
     @JsonProperty("y")
@@ -30,9 +32,21 @@ public class Location {
     private Integer rowIndex;
     @JsonProperty("weight")
     private Integer weight;
+    @JsonProperty("position")
+    private Integer position;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
+
+    @JsonProperty("distances")
+    public ArrayList<Integer> getGlobalPheromones() {
+        return globalPheromones;
+    }
+
+    @JsonProperty("distances")
+    public void setGlobalPheromones(ArrayList<Integer> globalPheromones) {
+        this.globalPheromones = globalPheromones;
+    }
 
     @JsonProperty("distances")
     public ArrayList<Integer> getDistances() {
@@ -102,6 +116,16 @@ public class Location {
     @JsonProperty("weight")
     public void setWeight(Integer weight) {
         this.weight = weight;
+    }
+
+    @JsonProperty("position")
+    public Integer getPosition() {
+        return position;
+    }
+
+    @JsonProperty("position")
+    public void setPosition(Integer position) {
+        this.position = position;
     }
 
     @JsonAnyGetter

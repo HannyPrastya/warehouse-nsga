@@ -20,27 +20,20 @@ public class GetShortestDistance {
 
             for (int j = 0; j < map.size(); j++){
                 Location end = map.get(j);
-
-                int startX = ((i % 2) == 0 ?  1 : -1) + start.getX();
-                int endX =  ((j % 2) == 0 ?  1 : -1) + end.getX();
-
-//                System.out.println(start.getX()+"-"+start.getY()+"-"+startX+"--"+start.getDirection()+"--"+start.getIndex()+"--"+start.getRowIndex());
-//                System.out.println(end.getX()+"-"+end.getY()+"-"+endX+"--"+end.getDirection()+"--"+end.getIndex()+"--"+end.getRowIndex());
+                int startX = start.getX() + (i != 0 ? (start.getPosition() == 0 ? -1 : 1) : 0);
+                int endX = end.getX() + (j != 0 ? (end.getPosition() == 0 ? -1 : 1) : 0);
 
                 int distance = 0;
 
+//                is in one row?
                 if(start.getRowIndex() == end.getRowIndex()){
-//                    System.out.println(true);
-
-                    if(Math.abs(start.getX()-end.getX()) == 3){
+                    if(Math.abs(start.getX()-end.getX()) == 2){
                         distance += Math.abs(start.getY()-end.getY())+Math.abs(startX-endX);
                     }else{
                         if(start.getX() != end.getX()){
                             if((start.getDirection() == end.getDirection()) && start.getDirection() == 1){
-//                                System.out.println("same direct");
                                 distance += (warehouse.getNumberOfRows()-start.getIndex())+(warehouse.getNumberOfRows()-end.getIndex())+2;
                             }else{
-//                                System.out.println("diff direct");
                                 distance += start.getIndex()+end.getIndex();
                             }
                             distance += Math.abs(startX-endX);
@@ -49,11 +42,8 @@ public class GetShortestDistance {
                         }
                     }
                 }else{
-//                    System.out.println(false);
                     distance += Math.abs(start.getY()-end.getY())+Math.abs(startX-endX);
                 }
-
-//                System.out.println(distance);
                 distances.add(distance);
             }
             start.setDistances(distances);

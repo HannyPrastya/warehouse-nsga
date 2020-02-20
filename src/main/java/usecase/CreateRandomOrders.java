@@ -1,5 +1,6 @@
 package usecase;
 
+import helper.Helpers;
 import model.entity.Item;
 import model.entity.Order;
 
@@ -8,20 +9,25 @@ import java.util.List;
 import java.util.Random;
 
 public class CreateRandomOrders {
-    public ArrayList<Order> orders = new ArrayList<>();
+    private ArrayList<Order> orders = new ArrayList<>();
+    private int totalWeight;
     public CreateRandomOrders(List<Item> items, int numberOfItems, int numberOfOrders, int numberOfItemPerOrder){
+        totalWeight = 0;
         for (int i = 0; i < numberOfOrders ; i++) {
             Order order = new Order();
             ArrayList<Integer> itemIDs = new ArrayList<>();
             int weight = 0;
 
-            for (int j = 0; j < numberOfItemPerOrder; j++){
-                int id = new Random().nextInt((numberOfItems - 1) + 1);
+            int n = Helpers.randInt(2, numberOfItemPerOrder);
+
+            for (int j = 0; j < n; j++){
+                int id = Helpers.randInt(1, numberOfItems);
                 itemIDs.add(id);
                 weight += items.get(id).getWeight();
             }
             order.setTotalWeight(weight);
             order.setItemIDs(itemIDs);
+            totalWeight += weight;
             orders.add(order);
         }
     }
@@ -29,4 +35,5 @@ public class CreateRandomOrders {
     public ArrayList<Order> getOrders() {
         return orders;
     }
+    public int getTotalWeight(){ return totalWeight; }
 }

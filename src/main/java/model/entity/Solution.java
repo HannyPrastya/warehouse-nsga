@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -15,58 +16,105 @@ import java.util.ArrayList;
 })
 
 public class Solution implements Cloneable{
-    @JsonProperty("chromosome")
+    private int rank;
+    private int dominationCount;
     private ArrayList<Integer> chromosome;
+    private ArrayList<Solution> dominatedSolutions = new ArrayList<>();
+    private double similarity = 0;
+    private int distance = 0;
+    private ArrayList<Batch> batches;
+    private double crowdingDistance = 0;
+    private ArrayList<Double> objectiveValues = new ArrayList<>();
+    private int maxNumberOfBatches = 0;
 
-    @JsonProperty("chromosome")
+    public Solution(){
+        objectiveValues.add(0.0);
+        objectiveValues.add(0.0);
+    }
+
+    public void setMaxNumberOfBatches(int maxNumberOfBatches) {
+        this.maxNumberOfBatches = maxNumberOfBatches;
+    }
+
+    public int getMaxNumberOfBatches() {
+        return maxNumberOfBatches;
+    }
+
     public ArrayList<Integer> getChromosome() {
         return chromosome;
     }
 
-    @JsonProperty("chromosome")
     public void setChromosome(ArrayList<Integer> chromosome) {
         this.chromosome = chromosome;
     }
 
-    @JsonProperty("distance")
-    private int distance = 0;
-
-    @JsonProperty("distance")
-    public int getDistance() {
-        return distance;
+    public double getDistance() {
+        return objectiveValues.get(0);
     }
 
-    @JsonProperty("distance")
-    public void setDistance(int distance) {
-        this.distance = distance;
+    public void setDistance(double distance) {
+        this.objectiveValues.set(0, distance);
     }
 
-    @JsonProperty("space")
-    private int space = 0;
-
-    @JsonProperty("space")
-    public int getSpace() {
-        return space;
+    public double getSimilarity() {
+        return objectiveValues.get(0);
     }
 
-    @JsonProperty("space")
-    public void setSpace(int space) {
-        this.space = space;
+    public void setSimilarity(double similarity) {
+        objectiveValues.set(1, similarity);
     }
 
-    @JsonProperty("batches")
-    private ArrayList<Batch> batches;
-
-    @JsonProperty("batches")
     public ArrayList<Batch> getBatches() {
         return batches;
     }
 
-    @JsonProperty("space")
     public void setBatches(ArrayList<Batch> batches) {
         this.batches = batches;
     }
 
+    public int getDominationCount() {
+        return dominationCount;
+    }
+
+    public void setDominationCount(int dominationCount) {
+        this.dominationCount = dominationCount;
+    }
+
+    public void setRank(int rank) {
+        this.rank = rank;
+    }
+
+    public int getRank() {
+        return rank;
+    }
+
+    public double getCrowdingDistance() {
+        return crowdingDistance;
+    }
+
+    public void setCrowdingDistance(double crowdingDistance) {
+        this.crowdingDistance = crowdingDistance;
+    }
+
+    public void incrementDominationCount(int increment){
+        this.dominationCount = dominationCount+increment;
+    }
+
+    public void setDominatedSolutions(Solution solution){
+        this.dominatedSolutions.add(solution);
+    }
+
+    public ArrayList<Solution> getDominatedSolutions() {
+        return dominatedSolutions;
+    }
+
+    public ArrayList<Double> getObjectiveValues() {
+        return objectiveValues;
+    }
+
+    public void setObjectiveValues(ArrayList<Double> objectiveValues) {
+        this.objectiveValues = objectiveValues;
+    }
 
     public void printGens(){
         String del = "";
@@ -82,5 +130,9 @@ public class Solution implements Cloneable{
         cloned.setChromosome((ArrayList<Integer>) chromosome.clone());
 
         return cloned;
+    }
+
+    public void reset(){
+
     }
 }

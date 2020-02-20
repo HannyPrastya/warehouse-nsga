@@ -14,7 +14,7 @@ import java.util.ArrayList;
         "IDs"
 })
 
-public class Batch {
+public class Batch implements Cloneable{
     @JsonProperty("IDs")
     private ArrayList<Integer> IDs = new ArrayList<>();
 
@@ -67,14 +67,33 @@ public class Batch {
         this.totalWeight = totalWeight;
     }
 
-    public void addOrder(Order order){
-//        System.out.println(order.getTotalWeight());
-        for (int id : order.getItemIDs()) {
-            if(!getIDs().contains(id)){
-                getIDs().add(id);
+    public void refreshItems(){
+        setIDs(new ArrayList<>());
+        for (Order order: getOrders()) {
+            for (int id : order.getItemIDs()) {
+                if(!getIDs().contains(id)){
+                    getIDs().add(id);
+                }
             }
         }
+    }
+
+    public void addOrder(Order order){
         totalWeight += order.getTotalWeight();
         orders.add(order);
+    }
+
+    public Order removeAndGetOrder(){
+        Order order = getOrders().get(0);
+        getOrders ().remove(0);
+        totalWeight -= order.getTotalWeight();
+        return order;
+    }
+
+    public Batch clone() throws CloneNotSupportedException {
+        Batch cloned = (Batch) super.clone();
+//        cloned.set((ArrayList<Integer>) chromosome.clone());
+
+        return cloned;
     }
 }
