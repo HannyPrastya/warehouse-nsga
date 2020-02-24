@@ -171,14 +171,15 @@ public class ACOModule {
     }
 
     public int calculateDistancePerBatch(Batch batch){
-        Collections.sort(batch.getIDs());
+        ArrayList<Integer> sortedData = new ArrayList<>(batch.getIDs());
+        Collections.sort(sortedData);
         String ids = batch.getIDs().toString();
         int shortestDistance = 0;
 
         if(memory.containsKey(ids)){
             shortestDistance = memory.get(ids);
         }else{
-            shortestDistance = calculateDistanceACO(batch.getIDs());
+            shortestDistance = calculateDistanceACO(sortedData);
 
             if(!memory.containsKey(ids)){
                 memory.put(ids, shortestDistance);

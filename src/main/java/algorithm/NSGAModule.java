@@ -1,10 +1,7 @@
 package algorithm;
 
 import helper.*;
-import model.entity.Chromosome;
-import model.entity.Dataset;
-import model.entity.Location;
-import model.entity.Solution;
+import model.entity.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -20,7 +17,7 @@ public class NSGAModule {
     private Dataset dataset;
     private ArrayList<Location> locations;
     private ArrayList<Solution> population;
-    private int numberOfGeneration = 10000;
+    private int numberOfGeneration = 100;
     private int numberOfPopulation = 10;
     private ArrayList<ArrayList<Double>> matrixOfSimilarity;
     private ArrayList<Solution> parentAs;
@@ -28,8 +25,8 @@ public class NSGAModule {
     private ArrayList<Solution> offsprings = new ArrayList<>();
     private int crossover = 70;
     Map<String, Integer> memory = new HashMap<String, Integer>();
-    Map<String, Integer> memoryChromosome = new HashMap<String, Integer>();
-    Map<String, int[]> fitnessMemory = new HashMap<String, int[]>();
+    Map<String, Double[]> memoryChromosome = new HashMap<String, Double[]>();
+    Map<String, Double[]> fitnessMemory = new HashMap<String, Double[]>();
     private ACOModule aco;
     private int shortestDistance = 999999999;
     int currentGeneration = 0;
@@ -43,23 +40,23 @@ public class NSGAModule {
     }
 
     public void start() throws CloneNotSupportedException {
-        this.population = MetaHelpers.createNewPopulation(numberOfPopulation, dataset.getOrders().size(),dataset.getMaxNumberofBatches());
+        this.population = MetaHelpers.createNewPopulation(numberOfPopulation, dataset.getOrders().size(),MetaHelpers.getMaxNumberofBatches(dataset));
         calculateFitness();
         preparePopulation();
         calculateDistances();
 
         while (currentGeneration < numberOfGeneration){
-            ArrayList<Solution> newPopulation = MetaHelpers.createNewPopulation(numberOfPopulation, dataset.getOrders().size(),dataset.getMaxNumberofBatches());
+            ArrayList<Solution> newPopulation = MetaHelpers.createNewPopulation(numberOfPopulation, dataset.getOrders().size(),MetaHelpers.getMaxNumberofBatches(dataset));
             population.addAll(newPopulation);
             population.addAll(offsprings);
             calculateFitness();
             preparePopulation();
 
-            population.forEach(solution -> {
-                System.out.println(solution.getObjectiveValues());
-            });
+//            population.forEach(solution -> {
+//                System.out.println(solution.getObjectiveValues());
+//            });
             calculateDistances();
-            System.out.println(currentGeneration+". "+shortestDistance);
+            System.out.println(currentGeneration+". "+shortestDistance+" - "+population.size());
 
             population = getChildFromCombinedPopulation();
             doOperators();
@@ -69,8 +66,8 @@ public class NSGAModule {
     }
 
     private void calculateDistances(){
-        int rank1 = 0;
-        int mustBeCalc = 0;
+//        int rank1 = 0;
+//        int mustBeCalc = 0;
         for (Solution sol: population) {
             if(sol.getRank() == 1){
                 String ids = sol.getChromosome().toString();
@@ -81,18 +78,18 @@ public class NSGAModule {
                     int shortestDistance = aco.getDistance();
                     memory.put(ids, shortestDistance);
                     sd = shortestDistance;
-                    ++mustBeCalc;
+//                    ++mustBeCalc;
                 }else{
                     sd = memory.get(ids);
                 }
                 if(sd < this.shortestDistance){
                     this.shortestDistance = sd;
                 }
-                ++rank1;
+//                ++rank1;
             }
         }
 
-        System.out.println(rank1+" - "+mustBeCalc);
+//        System.out.println(rank1+" - "+mustBeCalc);
     }
 
     private void doOperators() throws CloneNotSupportedException {
@@ -156,12 +153,28 @@ public class NSGAModule {
     }
 
     public void calculateFitness() throws CloneNotSupportedException {
-        for (Solution solution: population) {
-            MetaHelpers.calculateFitness(solution, this.dataset, this.locations, this.matrixOfSimilarity, this.fitnessMemory);
+        for (Solution solution : population) {
+            calculateFitnessPerSolution(solution);
         }
 
-        for (Solution solution: offsprings) {
+        for(Solution solution : offsprings){
+            calculateFitnessPerSolution(solution);
+        }
+    }
+
+    public void calculateFitnessPerSolution(Solution solution) throws CloneNotSupportedException {
+        if(memoryChromosome.containsKey(solution.getChromosome().toString())){
+            ArrayList<Batch> batches = MetaHelpers.convertSolutionToBatches(solution, dataset);
+            solution.setBatches(batches);
+            solution.setDistance(memoryChromosome.get(solution.getChromosome().toString())[0]);
+            solution.setSimilarity(memoryChromosome.get(solution.getChromosome().toString())[1]);
+        }else{
             MetaHelpers.calculateFitness(solution, this.dataset, this.locations, this.matrixOfSimilarity, this.fitnessMemory);
+
+            Double[] r = new Double[2];
+            r[0] = solution.getObjectiveValues().get(0);
+            r[1] = solution.getObjectiveValues().get(1);
+            memoryChromosome.put(solution.getChromosome().toString(), r);
         }
     }
 

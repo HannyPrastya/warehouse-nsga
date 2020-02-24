@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -16,15 +18,15 @@ import java.util.ArrayList;
 
 public class Batch implements Cloneable{
     @JsonProperty("IDs")
-    private ArrayList<Integer> IDs = new ArrayList<>();
+    private Set<Integer> IDs = new HashSet<>();
 
     @JsonProperty("IDs")
-    public ArrayList<Integer> getIDs() {
+    public Set<Integer> getIDs() {
         return IDs;
     }
 
     @JsonProperty("IDs")
-    public void setIDs(ArrayList<Integer> IDs) {
+    public void setIDs(Set<Integer> IDs) {
         this.IDs = IDs;
     }
 
@@ -68,19 +70,16 @@ public class Batch implements Cloneable{
     }
 
     public void refreshItems(){
-        setIDs(new ArrayList<>());
+        setIDs(new HashSet<>());
         for (Order order: getOrders()) {
-            for (int id : order.getItemIDs()) {
-                if(!getIDs().contains(id)){
-                    getIDs().add(id);
-                }
-            }
+            IDs.addAll(order.getItemIDs());
         }
     }
 
     public void addOrder(Order order){
         totalWeight += order.getTotalWeight();
         orders.add(order);
+        IDs.addAll(order.getItemIDs());
     }
 
     public Order removeAndGetOrder(){

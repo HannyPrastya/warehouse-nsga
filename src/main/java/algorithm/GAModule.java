@@ -19,7 +19,7 @@ public class GAModule {
     int maxNumberOfBatches;
 
     int bestFitness = 999999999;
-    int maxGeneration = 1000;
+    int maxGeneration = 100;
     int numberOfPopulation = 20;
     int currentGeneration = 0;
     int crossover = 70;
@@ -30,10 +30,11 @@ public class GAModule {
         this.locations = WarehouseRepository.getLocations();
         this.matrix = new SimilarityRepository(dataset).getMatrix();
 
-        maxNumberOfBatches = dataset.getMaxNumberofBatches();
+        maxNumberOfBatches = MetaHelpers.getMaxNumberofBatches(dataset);
     }
 
     public void start()throws CloneNotSupportedException{
+        System.out.println("START");
         while (currentGeneration < maxGeneration){
             if(currentGeneration == 0) {
                 population = MetaHelpers.createNewPopulation(numberOfPopulation, dataset.getOrders().size(), maxNumberOfBatches);
@@ -54,6 +55,10 @@ public class GAModule {
 
             ++currentGeneration;
         }
+
+        System.out.println(bestFitness);
+
+        System.out.println("END");
     }
 
     private void calculateFitness() throws CloneNotSupportedException {
@@ -72,9 +77,11 @@ public class GAModule {
         double x = 0;
         for (Batch batch: batches) {
             for (int i = 0; i < batch.getIDs().size(); i++) {
-                int id = batch.getIDs().get(i);
+                Integer[] IDs = batch.getIDs().toArray(new Integer[0]);
+                int id = IDs[i];
                 for (int j = i+1; j < batch.getIDs().size(); j++) {
-                    int id2 = batch.getIDs().get(j);
+                    Integer[] IDs2 = batch.getIDs().toArray(new Integer[0]);
+                    int id2 = IDs2[j];
                     if(Configuration.activeObjetive == 0){
                         x += locations.get(id).getDistances().get(id2);
                     }else if(Configuration.activeObjetive == 1){
@@ -225,7 +232,7 @@ public class GAModule {
             elite.setDistance(acoModule.getDistance());
             bestFitness = acoModule.getDistance();
         }
-        System.out.println(currentGeneration+". "+bestFitness);
+//        System.out.println(bestFitness);
     }
 
 }

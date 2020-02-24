@@ -19,6 +19,7 @@ public class Main {
         ObjectMapper mapper = new ObjectMapper();
 
         int[][] datasetList = {{50,20,3},{50,20,6},{50,40,3},{50,40,6},{100,20,3},{100,20,6},{100,40,3},{100,40,6},{200,20,3},{200,20,6},{200,40,3},{200,40,6},{500,20,3},{500,20,6},{500,40,3},{500,40,6}};
+//        int[][] datasetList = {{10,200,6}};
 
 //        ArrayList<Integer> temp = new ArrayList<>();
 //        temp.add(2);
@@ -32,32 +33,34 @@ public class Main {
 //        aco.setLocations(warehouseRepository.getLocations());
 //        System.out.println(aco.calculateDistanceACO(temp));
 
-        ArrayList<Item> items = new CreateRandomItems(WarehouseRepository.getLocations().size()-1).getItems();
-        for (int i = 0; i < datasetList.length; i++) {
-            int[] list = datasetList[i];
+//        ArrayList<Item> items = new CreateRandomItems(WarehouseRepository.getLocations().size()-1).getItems();
+//        for (int i = 0; i < datasetList.length; i++) {
+//            int[] list = datasetList[i];
 ////            get dataset
-            DatasetRepository datasetRepository = new DatasetRepository(items, list[0], list[1], list[2]);
-//            set dataset
-            Dataset dataset = datasetRepository.getDataset();
-            dataset.setItems(items);
-            String json = mapper.writeValueAsString(dataset);
+//            DatasetRepository datasetRepository = new DatasetRepository(items, list[0], list[1], list[2]);
+////            set dataset
+//            Dataset dataset = datasetRepository.getDataset();
+//            dataset.setItems(items);
+//
+//            String json = mapper.writeValueAsString(dataset);
+//
+//            try (Writer writer = new BufferedWriter(new OutputStreamWriter(
+//                new FileOutputStream("/Users/hirito48/IdeaProjects/warehouse-nsga/src/main/resources/"+list[0]+"-"+list[1]+"-"+list[2]+".json"), "utf-8"))) {
+//                writer.write(json);
+//            }
+//        }
 
-            try (Writer writer = new BufferedWriter(new OutputStreamWriter(
-                new FileOutputStream("/Users/hirito48/IdeaProjects/warehouse-nsga/src/main/resources/"+list[0]+"-"+list[1]+"-"+list[2]+".json"), "utf-8"))) {
-                writer.write(json);
-            }
-        }
-
-        for (int i = 0; i < 1; i++) {
+        for (int i = 0; i < 16; i++) {
             int[] list = datasetList[i];
 
             Dataset dataset = mapper.readValue(new File("/Users/hirito48/IdeaProjects/warehouse-nsga/src/main/resources/"+list[0]+"-"+list[1]+"-"+list[2]+".json"), Dataset.class);
+//            Dataset dataset = mapper.readValue(new File("/Users/hirito48/IdeaProjects/warehouse-nsga/src/main/resources/"+list[0]+"-"+list[1]+"-"+list[2]+".json"), Dataset.class);
 //            DatasetRepository.setDataset(dataset);
-//            GAModule ga = new GAModule(dataset);
-//            ga.start();
+            GAModule ga = new GAModule(dataset);
+            ga.start();
 
-            NSGAModule nsga = new NSGAModule(dataset);
-            nsga.start();
+//            NSGAModule nsga = new NSGAModule(dataset);
+//            nsga.start();
         }
 
 ////        import dataset
