@@ -18,7 +18,24 @@ public class Main {
     public static void main(String[] args) throws IOException, CloneNotSupportedException {
         ObjectMapper mapper = new ObjectMapper();
 
-        int[][] datasetList = {{50,20,3},{50,20,6},{50,40,3},{50,40,6},{100,20,3},{100,20,6},{100,40,3},{100,40,6},{200,20,3},{200,20,6},{200,40,3},{200,40,6},{500,20,3},{500,20,6},{500,40,3},{500,40,6}};
+        int[][] datasetList = {
+            {50,200,3},
+            {50,200,6},
+            {50,400,3},
+            {50,400,6},
+            {100,200,3},
+            {100,200,6},
+            {100,400,3},
+            {100,400,6},
+            {200,200,3},
+            {200,200,6},
+            {200,400,3},
+            {200,400,6},
+            {500,200,3},
+            {500,200,6},
+            {500,400,3},
+            {500,400,6}
+        };
 //        int[][] datasetList = {{10,200,6}};
 
 //        ArrayList<Integer> temp = new ArrayList<>();
@@ -52,15 +69,19 @@ public class Main {
 
         for (int i = 0; i < 16; i++) {
             int[] list = datasetList[i];
+            System.out.println(list[0]+"-"+list[1]+"-"+list[2]);
 
             Dataset dataset = mapper.readValue(new File("/Users/hirito48/IdeaProjects/warehouse-nsga/src/main/resources/"+list[0]+"-"+list[1]+"-"+list[2]+".json"), Dataset.class);
 //            Dataset dataset = mapper.readValue(new File("/Users/hirito48/IdeaProjects/warehouse-nsga/src/main/resources/"+list[0]+"-"+list[1]+"-"+list[2]+".json"), Dataset.class);
 //            DatasetRepository.setDataset(dataset);
-            GAModule ga = new GAModule(dataset);
-            ga.start();
+
+            for (int j = 0; j < 5; j++) {
+                GAModule ga = new GAModule(dataset);
+                ga.start();
 
 //            NSGAModule nsga = new NSGAModule(dataset);
 //            nsga.start();
+            }
         }
 
 ////        import dataset

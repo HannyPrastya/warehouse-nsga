@@ -34,7 +34,6 @@ public class GAModule {
     }
 
     public void start()throws CloneNotSupportedException{
-        System.out.println("START");
         while (currentGeneration < maxGeneration){
             if(currentGeneration == 0) {
                 population = MetaHelpers.createNewPopulation(numberOfPopulation, dataset.getOrders().size(), maxNumberOfBatches);
@@ -55,10 +54,7 @@ public class GAModule {
 
             ++currentGeneration;
         }
-
         System.out.println(bestFitness);
-
-        System.out.println("END");
     }
 
     private void calculateFitness() throws CloneNotSupportedException {
