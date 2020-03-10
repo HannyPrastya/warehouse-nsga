@@ -4,9 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -18,15 +16,15 @@ import java.util.Set;
 
 public class Batch implements Cloneable{
     @JsonProperty("IDs")
-    private Set<Integer> IDs = new HashSet<>();
+    private Map<Integer, Integer> IDs = new HashMap<Integer, Integer>();
 
     @JsonProperty("IDs")
-    public Set<Integer> getIDs() {
+    public Map<Integer, Integer> getIDs() {
         return IDs;
     }
 
     @JsonProperty("IDs")
-    public void setIDs(Set<Integer> IDs) {
+    public void setIDs(Map<Integer, Integer> IDs) {
         this.IDs = IDs;
     }
 
@@ -69,23 +67,54 @@ public class Batch implements Cloneable{
         this.totalWeight = totalWeight;
     }
 
-    public void refreshItems(){
-        setIDs(new HashSet<>());
-        for (Order order: getOrders()) {
-            IDs.addAll(order.getItemIDs());
-        }
+    @JsonProperty("totalItems")
+    private int totalItems = 0;
+
+    @JsonProperty("totalItems")
+    public int getTotalItems() {
+        return totalItems;
     }
 
+    @JsonProperty("orders")
+    public void setTotalItems(int totalItems) {
+        this.totalItems = totalItems;
+    }
+
+//    public void refreshItems(){
+//        setIDs(new HashSet<>());
+//        totalWeight = 0;
+//        for (Order order: getOrders()) {
+//            IDs.addAll(order.getItemIDs());
+//            totalWeight += order.getTotalWeight();
+//        }
+//    }
+
     public void addOrder(Order order){
-        totalWeight += order.getTotalWeight();
         orders.add(order);
-        IDs.addAll(order.getItemIDs());
+        totalWeight += order.getTotalWeight();
+        totalItems += order.getItemIDs().size();
+        for (Integer itemID : order.getItemIDs()) {
+            if(IDs.containsKey(itemID)){
+                IDs.put(itemID, IDs.get(itemID) + 1);
+            }else{
+                IDs.put(itemID, 1);
+            }
+        }
     }
 
     public Order removeAndGetOrder(){
         Order order = getOrders().get(0);
-        getOrders ().remove(0);
+        for (Integer itemID : order.getItemIDs()) {
+            if(IDs.get(itemID) > 1){
+                IDs.put(itemID, IDs.get(itemID) - 1);
+            }else{
+                IDs.remove(itemID);
+            }
+        }
+        getOrders().remove(0);
         totalWeight -= order.getTotalWeight();
+        totalItems -= order.getItemIDs().size();
+
         return order;
     }
 

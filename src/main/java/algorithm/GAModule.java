@@ -3,9 +3,7 @@ package algorithm;
 import helper.*;
 import model.entity.*;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
+import java.util.*;
 
 public class GAModule {
     Dataset dataset;
@@ -14,13 +12,16 @@ public class GAModule {
     ArrayList<Solution> paretoSolutions = new ArrayList<>();
     ArrayList<Solution> offsprings = new ArrayList<>();
     ArrayList<ArrayList<Double>> matrix = new ArrayList<>();
+    Map<String, Double[]> fitnessMemory = new HashMap<String, Double[]>();
+    Map<String, Double[]> memoryChromosome = new HashMap<String, Double[]>();
+
     ArrayList<Solution> parentAs;
     ArrayList<Solution> parentBs;
     int maxNumberOfBatches;
 
     int bestFitness = 999999999;
     int maxGeneration = 100;
-    int numberOfPopulation = 20;
+    int numberOfPopulation = 10;
     int currentGeneration = 0;
     int crossover = 70;
     Solution elite;
@@ -42,8 +43,7 @@ public class GAModule {
                 population.add(elite);
 
                 for (int j = 0; j < numberOfPopulation-1; j++) {
-                    Solution solution = new Solution();
-                    solution.setChromosome(MetaHelpers.createChromosome(dataset.getOrders().size(), maxNumberOfBatches));
+                    Solution solution = MetaHelpers.createNewSolution(dataset.getOrders().size(), maxNumberOfBatches);
                     population.add(solution);
                 }
             }
@@ -51,7 +51,11 @@ public class GAModule {
             doOperators();
             calculateFitness();
             getElitsm();
-
+            System.out.println("Current generation : "+currentGeneration);
+//            population.forEach(solution -> {
+//                System.out.println(solution.getObjectiveValues());;
+//            });
+//            System.out.println(elite.getObjectiveValues());
             ++currentGeneration;
         }
         System.out.println(bestFitness);
@@ -67,26 +71,39 @@ public class GAModule {
     }
 
     private void calculatePerSolution(Solution solution) throws CloneNotSupportedException{
-        ArrayList<Batch> batches = convertSolutionToBatches(solution);
-        solution.setBatches(batches);
+        if(memoryChromosome.containsKey(solution.getChromosome().toString())){
+            ArrayList<Batch> batches = MetaHelpers.convertSolutionToBatches(solution, dataset);
+            solution.setBatches(batches);
 
-        double x = 0;
-        for (Batch batch: batches) {
-            for (int i = 0; i < batch.getIDs().size(); i++) {
-                Integer[] IDs = batch.getIDs().toArray(new Integer[0]);
-                int id = IDs[i];
-                for (int j = i+1; j < batch.getIDs().size(); j++) {
-                    Integer[] IDs2 = batch.getIDs().toArray(new Integer[0]);
-                    int id2 = IDs2[j];
-                    if(Configuration.activeObjetive == 0){
-                        x += locations.get(id).getDistances().get(id2);
-                    }else if(Configuration.activeObjetive == 1){
-                        x += matrix.get(id).get(id2);
-                    }
-                }
-            }
+            solution.setDistance(memoryChromosome.get(solution.getChromosome().toString())[0]);
+            solution.setSimilarity(memoryChromosome.get(solution.getChromosome().toString())[1]);
+        }else{
+            MetaHelpers.calculateFitness(solution, this.dataset, this.locations, this.fitnessMemory);
+
+            Double[] r = new Double[2];
+            r[0] = solution.getObjectiveValues().get(0);
+            r[1] = solution.getObjectiveValues().get(1);
+            memoryChromosome.put(solution.getChromosome().toString(), r);
         }
-        solution.getObjectiveValues().set(Configuration.activeObjetive, x);
+//        ArrayList<Batch> batches = convertSolutionToBatches(solution);
+//        solution.setBatches(batches);
+//        double x = 0;
+//        for (Batch batch: batches) {
+//            for (int i = 0; i < batch.getIDs().size(); i++) {
+//                Integer[] IDs = batch.getIDs().keySet().toArray(new Integer[0]);
+//                int id = IDs[i];
+//                for (int j = i+1; j < batch.getIDs().size(); j++) {
+//                    Integer[] IDs2 = batch.getIDs().keySet().toArray(new Integer[0]);
+//                    int id2 = IDs2[j];
+//                    if(Configuration.activeObjetive == 0){
+//                        x += locations.get(id).getDistances().get(id2);
+//                    }else if(Configuration.activeObjetive == 1){
+//                        x += matrix.get(id).get(id2);
+//                    }
+//                }
+//            }
+//        }
+//        solution.getObjectiveValues().set(Configuration.activeObjetive, x);
     }
 
     private void selection() throws CloneNotSupportedException {
@@ -123,6 +140,7 @@ public class GAModule {
             }else{
                 x = (int) Math.round((1/sol.getObjectiveValues().get(Configuration.activeObjetive))/total*100);
             }
+
             for (int j = 0; j < x; j++) {
                 wheel.add(sol);
             }
@@ -132,8 +150,8 @@ public class GAModule {
             int rand = Helpers.randInt(0, wheel.size()-1);
             parentAs.add(wheel.get(rand));
             wheel.removeIf(solution -> solution.equals(wheel.get(rand)));
-
-            int rand2 = Helpers.randInt(0, wheel.size()-1);
+            int x = wheel.size() - 1;
+            int rand2 = Helpers.randInt(0, x);
             parentBs.add(wheel.get(rand2));
             wheel.removeIf(solution -> solution.equals(wheel.get(rand2)));
         }
@@ -174,34 +192,33 @@ public class GAModule {
         }
     }
 
-    private ArrayList<Batch> convertSolutionToBatches(Solution solution) throws CloneNotSupportedException {
-        ArrayList<Batch> batches = new ArrayList<>();
-
-        for (int i = 0; i < maxNumberOfBatches; i++) {
-            batches.add(new Batch());
-        }
-
-        for (int orderID = 0; orderID < solution.getChromosome().size(); orderID++) {
-            Order order = dataset.getOrders().get(orderID);
-            int batchNumber = solution.getChromosome().get(orderID);
-            batches.get(batchNumber).addOrder(order);
-        }
-
-        for (Batch batch: batches) {
-            while(batch.getTotalWeight() > dataset.getCapacity()){
-                Order order = batch.removeAndGetOrder();
-                for (Batch batchSearch: batches) {
-                    if(dataset.getCapacity() - batchSearch.getTotalWeight() > order.getTotalWeight()){
-                        batchSearch.addOrder(order);
-                        break;
-                    }
-                }
-            }
-            batch.refreshItems();
-        }
-
-        return batches;
-    }
+//    private ArrayList<Batch> convertSolutionToBatches(Solution solution) throws CloneNotSupportedException {
+//        ArrayList<Batch> batches = new ArrayList<>();
+//
+//        for (int i = 0; i < maxNumberOfBatches; i++) {
+//            batches.add(new Batch());
+//        }
+//
+//        for (int orderID = 0; orderID < solution.getChromosome().size(); orderID++) {
+//            Order order = dataset.getOrders().get(orderID);
+//            int batchNumber = solution.getChromosome().get(orderID);
+//            batches.get(batchNumber).addOrder(order);
+//        }
+//
+//        for (Batch batch: batches) {
+//            while(batch.getTotalWeight() > dataset.getCapacity()){
+//                Order order = batch.removeAndGetOrder();
+//                for (Batch batchSearch: batches) {
+//                    if(dataset.getCapacity() - batchSearch.getTotalWeight() > order.getTotalWeight()){
+//                        batchSearch.addOrder(order);
+//                        break;
+//                    }
+//                }
+//            }
+//        }
+//
+//        return batches;
+//    }
 
     public void getElitsm() throws CloneNotSupportedException {
         ArrayList<Solution> all = population;
@@ -217,6 +234,10 @@ public class GAModule {
             }
         });
 
+        for (Solution solution : all) {
+            System.out.println(solution.getObjectiveValues());
+        }
+
         Solution tempElite = all.get(0);
 
         ACOModule acoModule = new ACOModule();
@@ -225,7 +246,7 @@ public class GAModule {
         acoModule.calculateDistance();
         if(bestFitness > acoModule.getDistance()){
             elite = tempElite;
-            elite.setDistance(acoModule.getDistance());
+//            elite.setDistance(acoModule.getDistance());
             bestFitness = acoModule.getDistance();
         }
 //        System.out.println(bestFitness);

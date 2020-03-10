@@ -171,7 +171,7 @@ public class ACOModule {
     }
 
     public int calculateDistancePerBatch(Batch batch){
-        ArrayList<Integer> sortedData = new ArrayList<>(batch.getIDs());
+        ArrayList<Integer> sortedData = new ArrayList<>(batch.getIDs().keySet());
         Collections.sort(sortedData);
         String ids = batch.getIDs().toString();
         int shortestDistance = 0;

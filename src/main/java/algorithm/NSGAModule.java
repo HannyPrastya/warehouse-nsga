@@ -56,13 +56,14 @@ public class NSGAModule {
 //                System.out.println(solution.getObjectiveValues());
 //            });
             calculateDistances();
-            System.out.println(currentGeneration+". "+shortestDistance+" - "+population.size());
+//            System.out.println(currentGeneration+". "+shortestDistance+" - "+population.size());
 
             population = getChildFromCombinedPopulation();
             doOperators();
 
             ++currentGeneration;
         }
+//        System.out.println(shortestDistance);
     }
 
     private void calculateDistances(){
@@ -169,7 +170,7 @@ public class NSGAModule {
             solution.setDistance(memoryChromosome.get(solution.getChromosome().toString())[0]);
             solution.setSimilarity(memoryChromosome.get(solution.getChromosome().toString())[1]);
         }else{
-            MetaHelpers.calculateFitness(solution, this.dataset, this.locations, this.matrixOfSimilarity, this.fitnessMemory);
+            MetaHelpers.calculateFitness(solution, this.dataset, this.locations, this.fitnessMemory);
 
             Double[] r = new Double[2];
             r[0] = solution.getObjectiveValues().get(0);
