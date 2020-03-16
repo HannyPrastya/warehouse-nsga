@@ -1,8 +1,14 @@
 package helper;
 
+import java.net.URL;
 import java.util.Random;
 
 public class Helpers {
+
+    public static URL getResource(String name){
+        return Helpers.class.getClassLoader().getResource(name);
+    }
+
     public static int randInt(int min, int max) {
         Random rand = new Random();
         return rand.nextInt((max - min) + 1) + min;

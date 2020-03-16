@@ -63,7 +63,7 @@ public class NSGAModule {
 
             ++currentGeneration;
         }
-//        System.out.println(shortestDistance);
+        System.out.println(shortestDistance);
     }
 
     private void calculateDistances(){

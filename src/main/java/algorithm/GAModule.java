@@ -51,11 +51,13 @@ public class GAModule {
             doOperators();
             calculateFitness();
             getElitsm();
-            System.out.println("Current generation : "+currentGeneration);
+//            System.out.println("Current generation : "+currentGeneration);
 //            population.forEach(solution -> {
 //                System.out.println(solution.getObjectiveValues());;
 //            });
 //            System.out.println(elite.getObjectiveValues());
+//            System.out.println(bestFitness);
+
             ++currentGeneration;
         }
         System.out.println(bestFitness);
@@ -234,10 +236,6 @@ public class GAModule {
             }
         });
 
-        for (Solution solution : all) {
-            System.out.println(solution.getObjectiveValues());
-        }
-
         Solution tempElite = all.get(0);
 
         ACOModule acoModule = new ACOModule();
@@ -249,7 +247,6 @@ public class GAModule {
 //            elite.setDistance(acoModule.getDistance());
             bestFitness = acoModule.getDistance();
         }
-//        System.out.println(bestFitness);
     }
 
 }
