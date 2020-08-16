@@ -50,8 +50,6 @@ public class GetShortestDistance {
         }
     }
 
-
-
     public ArrayList<Location> getDistance(){
         return map;
     }
